@@ -1,0 +1,19 @@
+FARMACIA SOLANA — INTEGRACIÓN MERCADO PAGO (NETLIFY)
+
+Archivos:
+- FarmaciaSolana.html: página modificada con botón de checkout y retorno.
+- crear-pago-solana.js: Netlify Function que crea la preferencia.
+- precios-solana.js: catálogo de precios autoritativo (64 entradas).
+- precios-solana.json: copia editable para consulta/edición manual.
+
+ANTES DE PUBLICAR:
+1. Completar precios (ARS, números, sin separadores ni símbolo) en precios-solana.js, por ejemplo: "precio": 12500. Cada entrada inicialmente tiene null. El ID es el índice del producto que corresponde al catálogo de la página; mantener orden e IDs.
+2. Ubicar crear-pago-solana.js y precios-solana.js juntos en netlify/functions/ (la función importa el catálogo local).
+3. En variables de entorno de Netlify, configurar MP_ACCESS_TOKEN (token privado de Mercado Pago) y SITE_URL (URL absoluta del sitio, sin slash final).
+4. Publicar HTML y función en el sitio de Netlify.
+5. Probar primero con credenciales de prueba y pedidos de prueba antes de habilitar credenciales productivas.
+
+IMPORTANTE:
+- La función no acepta precios del navegador; calcula los importes usando el catálogo del servidor.
+- Hasta completar precios, los pagos serán rechazados con un aviso de precio pendiente.
+- El retorno success de Mercado Pago es un redirect y no verifica por sí solo el pago. Consultar el estado real en Mercado Pago antes de confirmar/entregar. Esta versión no incluye webhook de verificación.

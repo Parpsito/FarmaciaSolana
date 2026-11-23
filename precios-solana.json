@@ -1,0 +1,386 @@
+[
+  {
+    "id": 0,
+    "nombre": "Agua micelar 6 en 1",
+    "marca": "Dermaglós",
+    "precio": null
+  },
+  {
+    "id": 1,
+    "nombre": "Línea facial hombres",
+    "marca": "Dermaglós",
+    "precio": null
+  },
+  {
+    "id": 2,
+    "nombre": "Limpieza facial",
+    "marca": "Dermaglós",
+    "precio": null
+  },
+  {
+    "id": 3,
+    "nombre": "Línea Hyaluronic",
+    "marca": "Dorothy Gray",
+    "precio": null
+  },
+  {
+    "id": 4,
+    "nombre": "Línea Cell Therapy +45",
+    "marca": "Dorothy Gray",
+    "precio": null
+  },
+  {
+    "id": 5,
+    "nombre": "Línea facial",
+    "marca": "Andre Latour",
+    "precio": null
+  },
+  {
+    "id": 6,
+    "nombre": "Línea facial",
+    "marca": "Bagovit",
+    "precio": null
+  },
+  {
+    "id": 7,
+    "nombre": "DermAbsolu",
+    "marca": "Avène",
+    "precio": null
+  },
+  {
+    "id": 8,
+    "nombre": "Agua termal",
+    "marca": "Avène",
+    "precio": null
+  },
+  {
+    "id": 9,
+    "nombre": "Skin Active anti-imperfecciones",
+    "marca": "Garnier",
+    "precio": null
+  },
+  {
+    "id": 10,
+    "nombre": "Sérum Revitalift ácido hialurónico",
+    "marca": "L'Oréal Paris",
+    "precio": null
+  },
+  {
+    "id": 11,
+    "nombre": "True Match sérum con color",
+    "marca": "L'Oréal Paris",
+    "precio": null
+  },
+  {
+    "id": 12,
+    "nombre": "Hydro Boost",
+    "marca": "Neutrogena",
+    "precio": null
+  },
+  {
+    "id": 13,
+    "nombre": "Limpieza e hidratación",
+    "marca": "Cetaphil",
+    "precio": null
+  },
+  {
+    "id": 14,
+    "nombre": "Cremas faciales",
+    "marca": "Teatrical",
+    "precio": null
+  },
+  {
+    "id": 15,
+    "nombre": "Cremas faciales",
+    "marca": "Pond's",
+    "precio": null
+  },
+  {
+    "id": 16,
+    "nombre": "Loción astringente",
+    "marca": "Astriluge",
+    "precio": null
+  },
+  {
+    "id": 17,
+    "nombre": "Contorno de ojos",
+    "marca": "Tortulan",
+    "precio": null
+  },
+  {
+    "id": 18,
+    "nombre": "Cuidado corporal",
+    "marca": "PerPiel",
+    "precio": null
+  },
+  {
+    "id": 19,
+    "nombre": "Cuidado para hombre",
+    "marca": "Nivea Men",
+    "precio": null
+  },
+  {
+    "id": 20,
+    "nombre": "Protector solar",
+    "marca": "Hawaiian Tropic",
+    "precio": null
+  },
+  {
+    "id": 21,
+    "nombre": "Anthelios UVmune 400 con color",
+    "marca": "La Roche-Posay",
+    "precio": null
+  },
+  {
+    "id": 22,
+    "nombre": "Protectores y post solares",
+    "marca": "Varias marcas",
+    "precio": null
+  },
+  {
+    "id": 23,
+    "nombre": "Repelentes de insectos",
+    "marca": "Off! · Fuyi",
+    "precio": null
+  },
+  {
+    "id": 24,
+    "nombre": "SuperStay Vinyl Ink",
+    "marca": "Maybelline",
+    "precio": null
+  },
+  {
+    "id": 25,
+    "nombre": "Lifter Gloss",
+    "marca": "Maybelline",
+    "precio": null
+  },
+  {
+    "id": 26,
+    "nombre": "Corrector Instant Eraser",
+    "marca": "Maybelline",
+    "precio": null
+  },
+  {
+    "id": 27,
+    "nombre": "Máscaras de pestañas",
+    "marca": "Revlon · Maybelline",
+    "precio": null
+  },
+  {
+    "id": 28,
+    "nombre": "Bases de maquillaje",
+    "marca": "Idi Make Up",
+    "precio": null
+  },
+  {
+    "id": 29,
+    "nombre": "Bases ColorStay",
+    "marca": "Revlon",
+    "precio": null
+  },
+  {
+    "id": 30,
+    "nombre": "Esmaltes y tratamientos para uñas",
+    "marca": "Idi",
+    "precio": null
+  },
+  {
+    "id": 31,
+    "nombre": "Bálsamo labial",
+    "marca": "EOS",
+    "precio": null
+  },
+  {
+    "id": 32,
+    "nombre": "Rutina Glycolic Gloss",
+    "marca": "Elvive",
+    "precio": null
+  },
+  {
+    "id": 33,
+    "nombre": "Ampollas y tratamientos",
+    "marca": "Biferdil",
+    "precio": null
+  },
+  {
+    "id": 34,
+    "nombre": "Línea Puro Rubio",
+    "marca": "Biferdil",
+    "precio": null
+  },
+  {
+    "id": 35,
+    "nombre": "Tinturas y tratamiento capilar",
+    "marca": "Issue",
+    "precio": null
+  },
+  {
+    "id": 36,
+    "nombre": "Shampoo y Super Oils",
+    "marca": "Alta Moda",
+    "precio": null
+  },
+  {
+    "id": 37,
+    "nombre": "Cremas de peinar y baños de crema",
+    "marca": "Algabo · Pantene",
+    "precio": null
+  },
+  {
+    "id": 38,
+    "nombre": "Línea capilar",
+    "marca": "Bagovit",
+    "precio": null
+  },
+  {
+    "id": 39,
+    "nombre": "1 Million",
+    "marca": "Paco Rabanne",
+    "precio": null
+  },
+  {
+    "id": 40,
+    "nombre": "Brit",
+    "marca": "Burberry",
+    "precio": null
+  },
+  {
+    "id": 41,
+    "nombre": "Fragancias",
+    "marca": "Ciel",
+    "precio": null
+  },
+  {
+    "id": 42,
+    "nombre": "Fragancias",
+    "marca": "Sens",
+    "precio": null
+  },
+  {
+    "id": 43,
+    "nombre": "Fragancias",
+    "marca": "Boos",
+    "precio": null
+  },
+  {
+    "id": 44,
+    "nombre": "Perfumes",
+    "marca": "Shakira",
+    "precio": null
+  },
+  {
+    "id": 45,
+    "nombre": "Sales minerales de baño",
+    "marca": "Karina Rabolini",
+    "precio": null
+  },
+  {
+    "id": 46,
+    "nombre": "Multivitamínicos",
+    "marca": "Centrum",
+    "precio": null
+  },
+  {
+    "id": 47,
+    "nombre": "Vitaminas y minerales",
+    "marca": "Supradyn",
+    "precio": null
+  },
+  {
+    "id": 48,
+    "nombre": "Vitamina C efervescente",
+    "marca": "Redoxon",
+    "precio": null
+  },
+  {
+    "id": 49,
+    "nombre": "Vitamina C en gomitas para chicos",
+    "marca": "Redoxitos",
+    "precio": null
+  },
+  {
+    "id": 50,
+    "nombre": "Colágeno",
+    "marca": "Curflex",
+    "precio": null
+  },
+  {
+    "id": 51,
+    "nombre": "Cápsulas de chía",
+    "marca": "Chiacaps",
+    "precio": null
+  },
+  {
+    "id": 52,
+    "nombre": "Bolso post-parto",
+    "marca": "Farmacia Solana",
+    "precio": null
+  },
+  {
+    "id": 53,
+    "nombre": "Línea bebé",
+    "marca": "Aveno",
+    "precio": null
+  },
+  {
+    "id": 54,
+    "nombre": "Cosmética infantil",
+    "marca": "Varias marcas",
+    "precio": null
+  },
+  {
+    "id": 55,
+    "nombre": "Nebulizador a pistón",
+    "marca": "Silfab",
+    "precio": null
+  },
+  {
+    "id": 56,
+    "nombre": "Higiene íntima",
+    "marca": "Vagisil · Ingeo",
+    "precio": null
+  },
+  {
+    "id": 57,
+    "nombre": "Mochila kit matero",
+    "marca": "Farmacia Solana",
+    "precio": null
+  },
+  {
+    "id": 58,
+    "nombre": "Billeteras y tarjeteros",
+    "marca": "Varias",
+    "precio": null
+  },
+  {
+    "id": 59,
+    "nombre": "Neceseres y cosmetiqueros",
+    "marca": "Varias",
+    "precio": null
+  },
+  {
+    "id": 60,
+    "nombre": "Bufandas y chalinas",
+    "marca": "Varias",
+    "precio": null
+  },
+  {
+    "id": 61,
+    "nombre": "Termos y vasos térmicos",
+    "marca": "Varias",
+    "precio": null
+  },
+  {
+    "id": 62,
+    "nombre": "Crema clásica 200 g",
+    "marca": "Dermaglós",
+    "precio": null
+  },
+  {
+    "id": 63,
+    "nombre": "Crema gel facial para rojeces",
+    "marca": "Dermaglós",
+    "precio": null
+  }
+]

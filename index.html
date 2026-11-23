@@ -1347,8 +1347,23 @@ $("abrirPedido").addEventListener("click", abrir); $("barraBtn").addEventListene
 $("cerrarPedido").addEventListener("click", () => $("pedido").close()); $("seguir").addEventListener("click", () => $("pedido").close());
 $("pedido").addEventListener("click", (e) => { if (e.target === $("pedido")) $("pedido").close(); });
 $("form").addEventListener("submit", enviar);
-// Mercado Pago: el botón ya está; la función que crea el link de pago se conecta más adelante
-$("btnMp").addEventListener("click", () => toast("Pago con Mercado Pago: próximamente"));
+// Mercado Pago: genera el checkout desde Netlify (precios validados en servidor).
+$("btnMp").addEventListener("click", async () => {
+  if (!pedido.length) { toast("Tu pedido está vacío"); return; }
+  const nom = $("fNombre");
+  if (!nom.value.trim()) { $("cNombre").dataset.error = ""; $("eNombre").hidden = false; nom.setAttribute("aria-invalid", "true"); nom.focus(); return; }
+  const f = $("form"), entrega = f.elements.entrega.value, direccion = f.elements.direccion?.value?.trim() || "";
+  if (entrega === "envio" && !direccion) { toast("Completá la dirección de envío"); f.elements.direccion?.focus(); return; }
+  guardarCliente(); const btn = $("btnMp"), label = btn.textContent; btn.disabled = true; btn.textContent = "Generando pago…";
+  try {
+    const res = await fetch("/.netlify/functions/crear-pago-solana", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ carrito: pedido, nombre: nom.value.trim(), entrega, direccion, nota: f.elements.nota?.value?.trim() || "" }) });
+    const data = await res.json(); if (!res.ok || !data.link) throw new Error(data.error || "No se pudo generar el pago");
+    window.location.href = data.link;
+  } catch (err) { toast(err.message || "Error al generar el pago"); btn.disabled = false; btn.textContent = label; }
+});
+// Mensaje al volver del checkout: el redirect no sustituye la verificación del pago.
+const pagoRetorno = new URLSearchParams(location.search).get("pago");
+if (pagoRetorno) { setTimeout(() => { if (pagoRetorno === "ok") toast("Volviste del checkout. Verificá el pago en Mercado Pago antes de confirmar el pedido."); else if (pagoRetorno === "pendiente") toast("El pago quedó pendiente. Revisá Mercado Pago."); else toast("El checkout no se completó."); }, 500); }
 $("fNombre").addEventListener("input", () => { if ($("fNombre").value.trim()) { delete $("cNombre").dataset.error; $("eNombre").hidden = true; $("fNombre").removeAttribute("aria-invalid"); } });
 let tv; $("vaciar").addEventListener("click", () => {
   const b = $("vaciar");

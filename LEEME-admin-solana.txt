@@ -1,0 +1,9 @@
+Farmacia Solana: administración de precios y stock
+
+1. Copiar admin-solana.html a la raíz del sitio (URL sugerida /admin-solana.html).
+2. Copiar admin-solana.js, catalogo-solana.js y crear-pago-solana.js a netlify/functions (junto con precios-solana.js existente).
+3. Instalar/configurar Netlify Blobs para el sitio (el backend usa @netlify/blobs).
+4. En Netlify, configurar ADMIN_PASSWORD (contraseña segura), MP_ACCESS_TOKEN y SITE_URL.
+5. Deploy. Abrir /admin-solana.html, ingresar ADMIN_PASSWORD, cargar precios y stock, y guardar.
+
+El stock vacío significa sin límite; stock 0 significa agotado. Precio vacío no permite cobrar ese producto. El checkout revisa stock y precio del servidor. Este admin guarda stock y precios en Netlify Blobs. El frontend muestra precio cuando se cargan los valores. La comprobación de stock en checkout es validación puntual, no reserva concurrente de unidades.
