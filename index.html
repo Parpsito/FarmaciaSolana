@@ -304,6 +304,10 @@ dialog::backdrop{background:rgba(10,20,24,.55)}
 .item .n{font-weight:600;line-height:1.3}
 .item .n small{display:block;font-weight:500;color:var(--marca-t);font-size:.75rem;letter-spacing:.05em;text-transform:uppercase}
 .item .d{font-size:var(--s-1);color:var(--texto-2)}
+.item .linea-precio{font-size:var(--s-1);margin-top:.25rem;font-weight:600}
+.item .linea-subtotal{font-size:var(--s-1);color:var(--texto-2);margin-top:.15rem}
+.total-pedido{display:flex;justify-content:space-between;align-items:center;padding:var(--e4) var(--e5);font-weight:700;font-size:var(--s1);border-top:2px solid var(--linea)}
+.total-pedido small{display:block;font-size:var(--s-1);font-weight:500;color:var(--texto-2)}
 .item .ctrl{grid-column:2;display:flex;align-items:center;justify-content:space-between;gap:var(--e2);margin-top:.35rem}
 .item .step{border-color:var(--borde)}
 .quitar{display:inline-flex;align-items:center;gap:.3rem;min-height:var(--toque);padding:0 .5rem;font-size:var(--s-1);color:var(--texto-2);text-decoration:underline;text-underline-offset:3px;border-radius:var(--pill)}
@@ -1187,7 +1191,7 @@ function cardHtml({ p, id }) {
     </div></li>`;
 }
 let PRECIOS_SOLANA={}, STOCK_SOLANA={};
-async function cargarPrecioStock(){try{const r=await fetch("/.netlify/functions/admin-solana",{method:"GET",cache:"no-store",headers:{"Accept":"application/json"}});if(!r.ok)return;const d=await r.json();PRECIOS_SOLANA=d.precios||{};STOCK_SOLANA=d.stock||{};document.querySelectorAll("[data-precio]").forEach(el=>{const id=el.dataset.precio;const v=PRECIOS_SOLANA[id];el.textContent=(v!==undefined&&v!==null&&Number(v)>0)?"$"+Number(v).toLocaleString("es-AR"):"Precio a confirmar";});}catch(e){console.warn("No se pudieron cargar precios",e);}}
+async function cargarPrecioStock(){try{const r=await fetch("/.netlify/functions/admin-solana",{method:"GET",cache:"no-store",headers:{"Accept":"application/json"}});if(!r.ok)return;const d=await r.json();PRECIOS_SOLANA=d.precios||{};STOCK_SOLANA=d.stock||{};document.querySelectorAll("[data-precio]").forEach(el=>{const id=el.dataset.precio;const v=PRECIOS_SOLANA[id];el.textContent=(v!==undefined&&v!==null&&Number(v)>0)?"$"+Number(v).toLocaleString("es-AR"):"Precio a confirmar";});renderPedido();}catch(e){console.warn("No se pudieron cargar precios",e);}}
 function renderCatalogo() {
   const l = visibles(), c = CATEGORIAS.find(x => x[0] === F.cat);
   const col = F.col && (COLECCIONES.find(x => x.id === F.col) || PROMOS.find(x => x.id === F.col));
@@ -1225,16 +1229,19 @@ function renderPedido() {
   $("pedSub").textContent = n ? `${cuantos(n)} · ${pedido.reduce((a, x) => a + x.cant, 0)} unidades` : "";
   $("items").innerHTML = n ? pedido.map(x => {
     const p = prod(x.id), nom = p.nombre;
-    return `<div class="item"><span class="item-ph">${fotoHtml(x.id)}</span><div><p class="n"><small>${esc(p.marca)}</small>${esc(nom)}</p><p class="d num">${x.cant} ${x.cant === 1 ? "unidad" : "unidades"}</p></div>
+    const precio = Number(PRECIOS_SOLANA[x.id]); const disponiblePrecio = Number.isFinite(precio) && precio > 0; const subtotal = disponiblePrecio ? precio*x.cant : null;
+    return `<div class="item"><span class="item-ph">${fotoHtml(x.id)}</span><div><p class="n"><small>${esc(p.marca)}</small>${esc(nom)}</p><p class="d num">${x.cant} ${x.cant === 1 ? "unidad" : "unidades"}</p><p class="linea-precio num">${disponiblePrecio ? `$${precio.toLocaleString("es-AR")} c/u` : "Precio a confirmar"}</p><p class="linea-subtotal num">${disponiblePrecio ? `Subtotal: $${subtotal.toLocaleString("es-AR")}` : "Subtotal pendiente"}</p></div>
       <div class="ctrl"><div class="step" role="group" aria-label="Cantidad de ${esc(nom)}"><button data-lmenos="${x.id}" aria-label="Restar 1 de ${esc(nom)}">${ico("menos")}</button><input class="num" type="number" inputmode="numeric" min="0" value="${x.cant}" data-lcant="${x.id}" aria-label="Unidades de ${esc(nom)}"><button data-lmas="${x.id}" aria-label="Sumar 1 de ${esc(nom)}">${ico("mas")}</button></div>
       <button class="quitar" data-lquitar="${x.id}" aria-label="Quitar ${esc(nom)} del pedido">${ico("trash")}Quitar</button></div></div>`;
-  }).join("") : `<div class="d-vacio">${ico("cart")}<b>Tu pedido está vacío</b><p>Elegí productos y te confirmamos precio y disponibilidad por WhatsApp. Para medicamentos con receta, mandanos la foto de la receta.</p><button class="btn btn-1" data-cerrar-ir="1">Ver productos</button></div>`;
+  }).join("") + `<div class="total-pedido"><span>Total${pedido.some(x=>!(Number(PRECIOS_SOLANA[x.id])>0))?`<small>Los productos sin precio no se incluyen</small>`:""}</span><span class="num">$${pedido.reduce((a,x)=>a+(Number(PRECIOS_SOLANA[x.id])>0?Number(PRECIOS_SOLANA[x.id])*x.cant:0),0).toLocaleString("es-AR")}</span></div>` : `<div class="d-vacio">${ico("cart")}<b>Tu pedido está vacío</b><p>Elegí productos y te confirmamos precio y disponibilidad por WhatsApp. Para medicamentos con receta, mandanos la foto de la receta.</p><button class="btn btn-1" data-cerrar-ir="1">Ver productos</button></div>`;
   $("form").hidden = !n;
 }
 function mensaje() {
   const c = Object.fromEntries(new FormData($("form")));
   return ["Hola Farmacia Solana! Quiero hacer este pedido:", "",
-    ...pedido.map(x => { const p = prod(x.id); return `• ${x.cant} × ${p.marca} ${p.nombre}`; }), "",
+    ...pedido.map(x => { const p = prod(x.id), precio=Number(PRECIOS_SOLANA[x.id]); return `• ${x.cant} × ${p.marca} ${p.nombre}${precio>0 ? ` — $${precio.toLocaleString("es-AR")} c/u (subtotal $${(precio*x.cant).toLocaleString("es-AR")})` : ` — precio a confirmar`}`; }),
+    `Total de productos con precio: $${pedido.reduce((a,x)=>a+(Number(PRECIOS_SOLANA[x.id])>0?Number(PRECIOS_SOLANA[x.id])*x.cant:0),0).toLocaleString("es-AR")}`,
+    pedido.some(x=>!(Number(PRECIOS_SOLANA[x.id])>0)) ? "Hay productos con precio pendiente de confirmación." : "", "",
     "¿Me confirman precio y disponibilidad?", "",
     `Nombre: ${c.nombre}`,
     c.entrega === "envio" ? `Entrega: envío a domicilio${c.direccion ? " — " + c.direccion : ""}` : "Entrega: retiro en la farmacia",
