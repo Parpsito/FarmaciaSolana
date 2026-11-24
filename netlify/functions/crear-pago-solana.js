@@ -1,6 +1,6 @@
 // Netlify Function: crear preferencia de Mercado Pago para Farmacia Solana.
 // Requiere MP_ACCESS_TOKEN, SITE_URL y precios cargados en precios-solana.json.
-import catalogo from "./precios-solana.js";
+import { PRODUCTOS as catalogo } from "./catalogo-solana.js";
 import { getStore } from "@netlify/blobs";
 
 const headers = { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" };
@@ -18,7 +18,7 @@ export default async (request) => {
     if (entrega === "envio" && !direccion?.trim()) return responder(400, { error: "Falta la dirección de envío." });
     const items = carrito.map(({ id, cant }) => {
       if (!Number.isInteger(id) || !Number.isInteger(cant) || cant < 1 || cant > 50) throw new Error("Cantidad o producto inválido.");
-      const p = catalogo[id]; const precio = Number(precios[id] ?? p?.precio); if (!p || p.id !== id || !Number.isFinite(precio) || precio <= 0) throw new Error(`Precio pendiente de configurar: producto ${id}.`);
+      const p = catalogo[id]; const precio = Number(precios[id]); if (!p || p.id !== id || !Number.isFinite(precio) || precio <= 0) throw new Error(`Precio pendiente de configurar: producto ${id}.`);
       const disponible = saved.stock?.[id]; if (disponible !== undefined && disponible < cant) throw new Error(`Stock insuficiente: ${p.nombre}.`);
       return { title: `${p.marca} ${p.nombre}`, quantity: cant, unit_price: precio, currency_id: "ARS" };
     });

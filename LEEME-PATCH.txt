@@ -1,0 +1,25 @@
+PATCH CONSOLIDADO FARMACIA SOLANA
+
+Copiar estos archivos respetando sus rutas en el repositorio:
+- admin-solana.html (raíz del sitio)
+- package.json (raíz)
+- netlify/functions/admin-solana.js
+- netlify/functions/catalogo-solana.js
+- netlify/functions/crear-pago-solana.js
+
+Correcciones:
+1) Admin carga datos por POST autenticado; ya no deja el GET de datos expuesto.
+2) Los guardados mezclan cambios con los valores previos; no borran campos no modificados.
+3) Vaciar el campo de precio elimina el precio configurado; vaciar stock significa sin límite.
+4) Checkout y admin comparten catálogo.
+5) package.json incluye @netlify/blobs y evita dependencias incorrectas como @netlify/otel.
+
+IMPORTANTE SOBRE ETCD:
+Si el repositorio tiene package-lock.json antiguo, eliminarlo junto con este package.json y dejar que Netlify regenere la instalación, o generar uno nuevo localmente con npm install. No conservar lockfiles que contengan la resolución fallida @netlify/otel@^7.0.9.
+
+Netlify Environment variables requeridas:
+- ADMIN_PASSWORD
+- MP_ACCESS_TOKEN
+- SITE_URL (URL pública del sitio)
+
+Este parche no implementa webhook de Mercado Pago ni decremento automático del stock tras el pago.
