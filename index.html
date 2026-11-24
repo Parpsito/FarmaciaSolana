@@ -1182,10 +1182,12 @@ function cardHtml({ p, id }) {
     <div class="ph${FOTOS["p" + id] ? " cargando" : ""}"${HALO[id] ? ` style="--halo:${HALO[id]}"` : ""}>${fotoHtml(id, ` onload="this.parentNode.classList.remove('cargando')"`)}<div class="etqs">${etq}</div>${en ? `<span class="en-ped">${ico("check")}En tu pedido</span>` : ""}</div>
     <div class="cuerpo">
       <div class="tx"><p class="mk">${esc(p.marca)}</p><h3>${esc(p.nombre)}</h3>${p.detalle ? `<p class="det">${esc(p.detalle)}</p>` : ""}</div>
-      <p class="precio">Precio a confirmar</p>
+      <p class="precio" data-precio="${id}">Precio a confirmar</p>
       <div class="compra" data-compra="${id}">${compraHtml(id)}</div>
     </div></li>`;
 }
+let PRECIOS_SOLANA={}, STOCK_SOLANA={};
+async function cargarPrecioStock(){try{const r=await fetch("/.netlify/functions/admin-solana",{method:"GET",cache:"no-store",headers:{"Accept":"application/json"}});if(!r.ok)return;const d=await r.json();PRECIOS_SOLANA=d.precios||{};STOCK_SOLANA=d.stock||{};document.querySelectorAll("[data-precio]").forEach(el=>{const id=el.dataset.precio;const v=PRECIOS_SOLANA[id];el.textContent=(v!==undefined&&v!==null&&Number(v)>0)?"$"+Number(v).toLocaleString("es-AR"):"Precio a confirmar";});}catch(e){console.warn("No se pudieron cargar precios",e);}}
 function renderCatalogo() {
   const l = visibles(), c = CATEGORIAS.find(x => x[0] === F.cat);
   const col = F.col && (COLECCIONES.find(x => x.id === F.col) || PROMOS.find(x => x.id === F.col));
@@ -1280,7 +1282,7 @@ $("cerrarReceta").addEventListener("click", () => $("recetaDlg").close());
 $("recetaDlg").addEventListener("click", (e) => { if (e.target === $("recetaDlg")) $("recetaDlg").close(); });
 
 function irCatalogo() { mostrarVista("catalogo"); $("catalogo").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
-function setF(c, ir) { Object.assign(F, c); renderCatalogo(); if (ir) irCatalogo(); anunciar(`${$("catTit").textContent}: ${cuantos(visibles().length)}.`); }
+function setF(c, ir) { Object.assign(F, c); renderCatalogo(); cargarPrecioStock(); if (ir) irCatalogo(); anunciar(`${$("catTit").textContent}: ${cuantos(visibles().length)}.`); }
 function buscarTxt(v, ir) { $("qHero").value = v; $("qBorrar").hidden = !v; setF({ q: v.trim(), cat: "todos", col: null }, ir); }
 document.addEventListener("click", (e) => {
   const b = e.target.closest("button"); if (!b) return; const d = b.dataset;
@@ -1419,7 +1421,7 @@ $("anio").textContent = new Date().getFullYear();
 const hdr = document.querySelector("header");
 new ResizeObserver(() => document.documentElement.style.setProperty("--alto-header", hdr.offsetHeight + "px")).observe(hdr);
 tema(document.documentElement.dataset.tema);
-barraCat(); cargarCliente(); renderPortada(); renderCatalogo(); renderPedido(); pintarEstado(); setInterval(pintarEstado, 60000);
+barraCat(); cargarCliente(); renderPortada(); renderCatalogo(); cargarPrecioStock(); renderPedido(); pintarEstado(); setInterval(pintarEstado, 60000);
 
 
 /* ===================== PROMOCIONES =====================

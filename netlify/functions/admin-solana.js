@@ -4,6 +4,11 @@ const store = () => getStore({ name: "solana-admin", consistency: "strong" });
 const reply = (status, body, headers={}) => Response.json(body, { status, headers });
 export default async req => {
   try {
+    if (req.method === "GET") {
+      const s = store();
+      const saved = (await s.get("data", { type: "json" })) || { precios: {}, stock: {} };
+      return reply(200, { precios: saved.precios || {}, stock: saved.stock || {} }, { "Cache-Control": "no-store" });
+    }
     if (req.method !== "POST") return reply(405, { error: "Método no permitido" });
     let b; try { b = await req.json(); } catch { return reply(400, { error: "JSON inválido" }); }
     const pass = process.env.ADMIN_PASSWORD;
