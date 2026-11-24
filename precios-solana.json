@@ -3,19 +3,19 @@
     "id": 0,
     "nombre": "Agua micelar 6 en 1",
     "marca": "Dermaglós",
-    "precio": null
+    "precio": 100
   },
   {
     "id": 1,
     "nombre": "Línea facial hombres",
     "marca": "Dermaglós",
-    "precio": null
+    "precio": 100
   },
   {
     "id": 2,
     "nombre": "Limpieza facial",
     "marca": "Dermaglós",
-    "precio": null
+    "precio": 100
   },
   {
     "id": 3,
