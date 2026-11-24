@@ -22,7 +22,13 @@ export default async (request) => {
       const disponible = saved.stock?.[id]; if (disponible !== undefined && disponible < cant) throw new Error(`Stock insuficiente: ${p.nombre}.`);
       return { title: `${p.marca} ${p.nombre}`, quantity: cant, unit_price: precio, currency_id: "ARS" };
     });
-    const body = { items, external_reference: `solana-${Date.now()}`, metadata: { nombre: nombre.trim().slice(0,100), entrega: entrega === "envio" ? "envio" : "retiro", direccion: (direccion || "").trim().slice(0,250), nota: (nota || "").trim().slice(0,500) }, back_urls: { success: `${site}/?pago=ok`, pending: `${site}/?pago=pendiente`, failure: `${site}/?pago=error` }, auto_return: "approved" };
+    const orderId = `MP-${Date.now()}`;
+    const orderItems = carrito.map(({id,cant}) => ({ id, name: catalogo[id].nombre, brand: catalogo[id].marca, quantity: cant, unitPrice: Number(precios[id]) }));
+    const ordersStore = getStore({ name: "solana-orders", consistency: "strong" });
+    const orders = (await ordersStore.get("orders", { type: "json" })) || [];
+    orders.unshift({ id: orderId, createdAt: new Date().toISOString(), name: nombre.trim().slice(0,100), delivery: entrega === "envio" ? "envio" : "retiro", address: (direccion || "").trim().slice(0,250), note: (nota || "").trim().slice(0,500), items: orderItems, total: orderItems.reduce((a,x)=>a+x.unitPrice*x.quantity,0), method:"Mercado Pago", status:"pending", stockDeducted:false, stockRestored:false });
+    await ordersStore.setJSON("orders", orders);
+    const body = { items, external_reference: orderId, metadata: { order_id: orderId, nombre: nombre.trim().slice(0,100), entrega: entrega === "envio" ? "envio" : "retiro", direccion: (direccion || "").trim().slice(0,250), nota: (nota || "").trim().slice(0,500) }, notification_url: `${site}/.netlify/functions/mercadopago-webhook-solana`, back_urls: { success: `${site}/?pago=ok`, pending: `${site}/?pago=pendiente`, failure: `${site}/?pago=error` }, auto_return: "approved" };
     const mp = await fetch("https://api.mercadopago.com/checkout/preferences", { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
     const data = await mp.json(); if (!mp.ok) return responder(mp.status, { error: data.message || "Mercado Pago rechazó la preferencia." });
     return responder(200, { link: data.init_point, ref: data.id });

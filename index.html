@@ -1247,15 +1247,18 @@ function mensaje() {
     c.entrega === "envio" ? `Entrega: envío a domicilio${c.direccion ? " — " + c.direccion : ""}` : "Entrega: retiro en la farmacia",
     c.nota ? `Comentarios: ${c.nota}` : "", "¡Gracias!"].filter((x, i, a) => x !== "" || a[i - 1] !== "").join("\n").trim();
 }
-function enviar(e) {
+async function enviar(e) {
   e.preventDefault();
-  const nom = $("fNombre");
-  if (!nom.value.trim()) { $("cNombre").dataset.error = ""; $("eNombre").hidden = false; nom.setAttribute("aria-invalid", "true"); nom.focus(); return; }
-  guardarCliente();
-  const url = `https://wa.me/${WA}?text=${encodeURIComponent(mensaje())}`;
-  $("enviarTxt").textContent = "Abriendo WhatsApp…"; $("waAltLink").href = url;
-  window.open(url, "_blank", "noopener");
-  setTimeout(() => { $("enviarTxt").textContent = "Enviar pedido por WhatsApp"; $("waAlt").hidden = false; }, 1500);
+  const nom=$("fNombre"); if(!nom.value.trim()){ $("cNombre").dataset.error="";$("eNombre").hidden=false;nom.setAttribute("aria-invalid","true");nom.focus();return;}
+  const f=$("form"), entrega=f.elements.entrega.value, direccion=f.elements.direccion?.value?.trim()||"";
+  if(entrega==="envio"&&!direccion){toast("Completá la dirección de envío");f.elements.direccion?.focus();return;}
+  guardarCliente(); const btn=$("enviarTxt");btn.disabled=true;btn.textContent="Registrando pedido…";
+  try{
+   const r=await fetch("/.netlify/functions/registrar-pedido-solana",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({carrito:pedido,nombre:nom.value.trim(),entrega,direccion,nota:f.elements.nota?.value?.trim()||""})});
+   const data=await r.json();if(!r.ok)throw new Error(data.error||"No se pudo registrar el pedido");
+   const url=`https://wa.me/${WA}?text=${encodeURIComponent(mensaje())}`;$("waAltLink").href=url;window.open(url,"_blank","noopener");btn.textContent="Pedido registrado";$("waAlt").hidden=false;
+  }catch(err){toast(err.message||"Error al registrar");btn.textContent="Enviar pedido por WhatsApp";}
+  finally{btn.disabled=false;setTimeout(()=>btn.textContent="Enviar pedido por WhatsApp",2200);}
 }
 function guardarCliente() { cliente = Object.fromEntries(new FormData($("form"))); delete cliente.nota; guardar(K.cliente, cliente); }
 function cargarCliente() {
